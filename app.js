@@ -610,10 +610,10 @@ function sendGenericMessage(recipientId) {
 							url: "https://www.oculus.com/en-us/touch/",
 							title: "Open Web URL"
 						}, {
-							type: "postback",
+							type: "web_url",
 							title: "Call Postback",
 							url: "https://www.oculus.com/en-us/touch/",
-							payload: "Payload for second bubble"
+							payload: "Payload for second bubble",
 						}]
 					}]
 				}
