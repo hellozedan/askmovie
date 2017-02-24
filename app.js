@@ -259,6 +259,9 @@ function receivedMessage(event) {
 		// keywords and send back the corresponding example. Otherwise, just echo
 		// the text we received.
 		switch (messageText) {
+			case 'tt':
+				sendTestMessage(senderID);
+				break;
 			case 'image':
 				sendImageMessage(senderID);
 				break;
@@ -416,6 +419,28 @@ function receivedAccountLink(event) {
  * Send an image using the Send API.
  *
  */
+function sendTestMessage(recipientId){
+	var messageData = {
+		recipient: {
+			id: recipientId
+		},
+		message: {
+			attachment: {
+				"type": "survey",
+				"question": "What would you like to do?",
+				"msgid": "3er45",
+				"options": [{
+					"type": "url",
+					"title": "view website",
+					"url": "https://gupshup.io",
+					"webview_height_ratio": "compact"
+				}]
+			}
+		}
+	};
+
+	callSendAPI(messageData);
+}
 function sendImageMessage(recipientId) {
 	var messageData = {
 		recipient: {
