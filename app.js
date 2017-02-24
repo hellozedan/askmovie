@@ -432,7 +432,7 @@ function sendTestMessage(recipientId) {
                     text: "This is test text",
                     buttons: [{
                         type: "web_url",
-                        url: "https://petersfancyapparel.com/criteria_selector",
+                        url: "https://www.youtube.com",
                         title: "Select Criteria",
                         webview_height_ratio: "compact"
                     }]
