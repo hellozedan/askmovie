@@ -287,6 +287,10 @@ function receivedMessage(event) {
 				sendGenericMessage(senderID);
 				break;
 
+			case 'webview':
+				sendWebViewMessage(senderID);
+				break;
+
 			case 'receipt':
 				sendReceiptMessage(senderID);
 				break;
@@ -619,6 +623,31 @@ function sendGenericMessage(recipientId) {
 			}
 		}
 	};
+
+	callSendAPI(messageData);
+}
+function sendWebviewMessage(recipientId) {
+	var messageData = {
+		recipient: {
+			id: recipientId
+		},
+		message: {
+			attachment: {
+				"type": "catalogue",
+				"msgid": "6rty",
+				"items": [{
+					"title": "Gray T Shirt",
+					"imgurl": "http://ecx.images-amazon.com/images/I/819Cirp6kPL._UL1500_.jpg",
+					"options": [{
+						"type": "url",
+						"title": "view more",
+						"url": "http://www.amazon.in/Gritstones-Hooded-T-Shirt-GS60210CWLGMEL-_Grey_Large/dp/B00OXR17OE/ref=sr_1_6",
+						"webview_height_ratio": "compact"
+					}]
+				}]
+				}
+			}
+		}
 
 	callSendAPI(messageData);
 }
