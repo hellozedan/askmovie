@@ -633,21 +633,43 @@ function sendWebviewMessage(recipientId) {
 		},
 		message: {
 			attachment: {
-				"type": "catalogue",
-				"msgid": "6rty",
-				"items": [{
-					"title": "Gray T Shirt",
-					"imgurl": "http://ecx.images-amazon.com/images/I/819Cirp6kPL._UL1500_.jpg",
-					"options": [{
-						"type": "url",
-						"title": "view more",
-						"url": "http://www.amazon.in/Gritstones-Hooded-T-Shirt-GS60210CWLGMEL-_Grey_Large/dp/B00OXR17OE/ref=sr_1_6",
-						"webview_height_ratio": "compact"
+				type: "template",
+				payload: {
+					template_type: "generic",
+					elements: [{
+						title: "rift",
+						subtitle: "Next-generation virtual reality",
+						item_url: "https://www.oculus.com/en-us/rift/",
+						image_url: SERVER_URL + "/assets/rift.png",
+						buttons: [{
+							type: "web_url",
+							url: "https://www.oculus.com/en-us/rift/",
+							title: "Open Web URL",
+							webview_height_ratio: "compact"
+						}, {
+							type: "postback",
+							title: "Call Postback",
+							payload: "Payload for first bubble",
+						}]
+					}, {
+						title: "touch",
+						subtitle: "Your Hands, Now in VR",
+						item_url: "https://www.oculus.com/en-us/touch/",
+						image_url: SERVER_URL + "/assets/touch.png",
+						buttons: [{
+							type: "web_url",
+							url: "https://www.oculus.com/en-us/touch/",
+							title: "Open Web URL"
+						}, {
+							type: "postback",
+							title: "Call Postback",
+							payload: "Payload for second bubble",
+						}]
 					}]
-				}]
 				}
 			}
 		}
+	};
 
 	callSendAPI(messageData);
 }
