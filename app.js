@@ -518,7 +518,7 @@ function sendGenericMessage(recipientId, results) {
             title: results[i].name,
             subtitle: "",
             item_url: results[i].link,
-            image_url: results[i].image,
+            image_url: results[i].img,
             buttons: [{
                 type: "web_url",
                 url: "https://www.oculus.com/en-us/rift/",
@@ -789,11 +789,23 @@ function crawel(url, pn) {
     request(url, function (err, resp, body) {
         var $ = cheerio.load(body);
         var movies = [];
-        var links = $('.art_hdr_cont'); //use your CSS selector here
+        var links = $('.art_image img'); //use your CSS selector here
         $(links).each(function (i, d) {
+            var movieName = d.attribs.title;
+            movieName = movieName.replace('لاين', '')
+            movieName = movieName.replace('اون', '')
+            movieName = movieName.replace('مترجم', '')
+            movieName = movieName.replace('HD', '')
+            movieName = movieName.replace('فيلم', '')
+            movieName = movieName.replace('مشاهدة', '')
+            movieName = movieName.replace('مباشرة', '')
+            movieName = movieName.replace('DVD', '')
+            movieName = movieName.replace(/\d{4}/g, '')
+            movieName = movieName.trim()
             movies.push({
-                name: d.children[1].children[0].children[0].data,
-                link: d.children[1].children[0].attribs.href
+                name: movieName,
+                img:'http://www.anakbnet.com/'+d.attribs.src,
+                link: d.parent.attribs.href
             })
         });
         // var arr = [{ name: 'Star Wars' }, { name: 'The Empire Strikes Back' }];
