@@ -10,6 +10,9 @@ var movieModel = new Schema({
 	},
 	"name": {
 		type: String
+	},
+	"img": {
+		type: String
 	}
 });
 movieModel.index({url: "text", link: "text"});
