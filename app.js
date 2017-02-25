@@ -269,18 +269,11 @@ function receivedMessage(event) {
 
 
     } else if (messageAttachments) {
-        sendTextMessage(senderID, "Message with attachment received");
+        sendTextMessage(senderID, "The movie doesn't exist");
     }
 }
 
 
-/*
- * Delivery Confirmation Event
- *
- * This event is sent to confirm the delivery of a message. Read more about 
- * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
- *
- */
 function receivedDeliveryConfirmation(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -505,6 +498,7 @@ function sendButtonMessage(recipientId) {
 
 function sendGenericMessage(recipientId, results) {
 
+
     var messageData = {
         recipient: {
             id: recipientId
@@ -514,40 +508,29 @@ function sendGenericMessage(recipientId, results) {
                 type: "template",
                 payload: {
                     template_type: "generic",
-                    elements: [{
-                        title: results[0].name,
-                        subtitle: "Next-generation virtual reality",
-                        item_url: "https://www.oculus.com/en-us/rift/",
-                        image_url: SERVER_URL + "/assets/rift.png",
-                        buttons: [{
-                            type: "web_url",
-                            url: "https://www.oculus.com/en-us/rift/",
-                            title: "Open Web URL"
-                        }, {
-                            type: "postback",
-                            title: "Call Postback",
-                            payload: "Payload for first bubble",
-                        }],
-                    }, {
-                        title: "touch",
-                        subtitle: "Your Hands, Now in VR",
-                        item_url: "https://www.oculus.com/en-us/touch/",
-                        image_url: SERVER_URL + "/assets/touch.png",
-                        buttons: [{
-                            type: "web_url",
-                            url: "https://www.oculus.com/en-us/touch/",
-                            title: "Open Web URL"
-                        }, {
-                            type: "postback",
-                            title: "Call Postback",
-                            payload: "Payload for second bubble",
-                        }]
-                    }]
+                    elements: []
                 }
             }
         }
     };
-
+    for(var i=0; i<results.length; i++){
+        var element ={
+            title: results[i].name,
+            subtitle: "",
+            item_url: results[i].link,
+            //image_url: results[i].pic,
+            buttons: [{
+                type: "web_url",
+                url: "https://www.oculus.com/en-us/rift/",
+                title: "Open Web URL"
+            }, {
+                type: "postback",
+                title: "Call Postback",
+                payload: "Payload for first bubble",
+            }]
+        }
+        message.elements.push(element);
+    }
     callSendAPI(messageData);
 }
 function sendWebviewMessage(recipientId) {
