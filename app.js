@@ -261,7 +261,7 @@ function receivedMessage(event) {
                     sendGenericMessage(senderID, docs);
                 }
                 else{
-                    sendTextMessage(senderID, "The movie doesn't exist");
+                    sendTextMessage(senderID, "The movie doesn't exist);
                 }
 
             }
@@ -508,7 +508,21 @@ function sendGenericMessage(recipientId, results) {
                 type: "template",
                 payload: {
                     template_type: "generic",
-                    elements: []
+                    elements: [{
+                        title: results[0].name,
+                        subtitle: "",
+                        item_url: results[0].link,
+                        //image_url: SERVER_URL + "/assets/rift.png",
+                        buttons: [{
+                            type: "web_url",
+                            url: "https://www.oculus.com/en-us/rift/",
+                            title: "Open Web URL"
+                        }, {
+                            type: "postback",
+                            title: "Call Postback",
+                            payload: "Payload for first bubble",
+                        }],
+                    }]
                 }
             }
         }
@@ -529,7 +543,7 @@ function sendGenericMessage(recipientId, results) {
                 payload: "Payload for first bubble",
             }]
         }
-        message.elements.push(element);
+        message.elements.push(element)
     }
     callSendAPI(messageData);
 }
