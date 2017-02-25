@@ -261,7 +261,7 @@ function receivedMessage(event) {
                     sendGenericMessage(senderID, docs);
                 }
                 else{
-                    sendTextMessage(senderID, "Quick reply tapped");
+                    sendTextMessage(senderID, "The movie doesn't exist");
                 }
 
             }
