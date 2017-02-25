@@ -543,7 +543,7 @@ function sendGenericMessage(recipientId, results) {
                 payload: "Payload for first bubble",
             }]
         }
-        message.elements.push(element)
+       // message.elements.push(element)
     }
     callSendAPI(messageData);
 }
