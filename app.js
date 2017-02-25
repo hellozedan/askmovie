@@ -779,7 +779,7 @@ var searchTerm = 'screen+scraping';
 var url = 'http://www.anakbnet.com/cdep3-pxxx_xxx.html';
 var pageNS = 'xxx_xxx';
 var Movie = require('./models/movie.js');
-startCrawel(1);
+//startCrawel(1);
 function startCrawel(pn) {
     if (pn <= 60) {
         crawel(url.replace(pageNS, pn), pn);
