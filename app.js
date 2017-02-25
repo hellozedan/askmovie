@@ -254,73 +254,20 @@ function receivedMessage(event) {
     }
 
     if (messageText) {
+        Movie.find(
+            { "name": { "$regex": messageText, "$options": "i" } },
+            function(err,docs) {
+                if(docs && docs.length > 0){
+                    sendGenericMessage(senderID, docs);
+                }
+                else{
+                    sendTextMessage(senderID, "Quick reply tapped");
+                }
 
-        // If we receive a text message, check to see if it matches any special
-        // keywords and send back the corresponding example. Otherwise, just echo
-        // the text we received.
-        switch (messageText) {
-            case 'tt':
-                sendTestMessage(senderID);
-                break;
-            case 'image':
-                sendImageMessage(senderID);
-                break;
+            }
+        );
 
-            case 'gif':
-                sendGifMessage(senderID);
-                break;
 
-            case 'audio':
-                sendAudioMessage(senderID);
-                break;
-
-            case 'video':
-                sendVideoMessage(senderID);
-                break;
-
-            case 'file':
-                sendFileMessage(senderID);
-                break;
-
-            case 'button':
-                sendButtonMessage(senderID);
-                break;
-
-            case 'generic':
-                sendGenericMessage(senderID);
-                break;
-
-            case 'webview':
-                sendWebViewMessage(senderID);
-                break;
-
-            case 'receipt':
-                sendReceiptMessage(senderID);
-                break;
-
-            case 'quick reply':
-                sendQuickReply(senderID);
-                break;
-
-            case 'read receipt':
-                sendReadReceipt(senderID);
-                break;
-
-            case 'typing on':
-                sendTypingOn(senderID);
-                break;
-
-            case 'typing off':
-                sendTypingOff(senderID);
-                break;
-
-            case 'account linking':
-                sendAccountLinking(senderID);
-                break;
-
-            default:
-                sendTextMessage(senderID, messageText);
-        }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Message with attachment received");
     }
@@ -353,13 +300,6 @@ function receivedDeliveryConfirmation(event) {
 }
 
 
-/*
- * Postback Event
- *
- * This event is called when a postback is tapped on a Structured Message. 
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
- * 
- */
 function receivedPostback(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -377,13 +317,7 @@ function receivedPostback(event) {
     sendTextMessage(senderID, "Postback called");
 }
 
-/*
- * Message Read Event
- *
- * This event is called when a previously-sent message has been read.
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
- * 
- */
+
 function receivedMessageRead(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -396,14 +330,6 @@ function receivedMessageRead(event) {
         "number %d", watermark, sequenceNumber);
 }
 
-/*
- * Account Link Event
- *
- * This event is called when the Link Account or UnLink Account action has been
- * tapped.
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
- * 
- */
 function receivedAccountLink(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -415,10 +341,6 @@ function receivedAccountLink(event) {
         "and auth code %s ", senderID, status, authCode);
 }
 
-/*
- * Send an image using the Send API.
- *
- */
 function sendTestMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -461,10 +383,6 @@ function sendImageMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a Gif using the Send API.
- *
- */
 function sendGifMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -483,10 +401,7 @@ function sendGifMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Send audio using the Send API.
- *
- */
+
 function sendAudioMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -505,10 +420,7 @@ function sendAudioMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a video using the Send API.
- *
- */
+
 function sendVideoMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -527,10 +439,6 @@ function sendVideoMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a file using the Send API.
- *
- */
 function sendFileMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -549,10 +457,6 @@ function sendFileMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a text message using the Send API.
- *
- */
 function sendTextMessage(recipientId, messageText) {
     var messageData = {
         recipient: {
@@ -567,10 +471,6 @@ function sendTextMessage(recipientId, messageText) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a button message using the Send API.
- *
- */
 function sendButtonMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -603,11 +503,12 @@ function sendButtonMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a Structured Message (Generic Message type) using the Send API.
- *
- */
-function sendGenericMessage(recipientId) {
+function sendGenericMessage(recipientId, results) {
+    Movie.find(
+        { "name": { "$regex": recipientId, "$options": "i" } },
+        function(err,docs) {
+        }
+    );
     var messageData = {
         recipient: {
             id: recipientId
@@ -618,7 +519,7 @@ function sendGenericMessage(recipientId) {
                 payload: {
                     template_type: "generic",
                     elements: [{
-                        title: "rift",
+                        title: results[0].name,
                         subtitle: "Next-generation virtual reality",
                         item_url: "https://www.oculus.com/en-us/rift/",
                         image_url: SERVER_URL + "/assets/rift.png",
