@@ -504,11 +504,7 @@ function sendButtonMessage(recipientId) {
 }
 
 function sendGenericMessage(recipientId, results) {
-    Movie.find(
-        { "name": { "$regex": recipientId, "$options": "i" } },
-        function(err,docs) {
-        }
-    );
+
     var messageData = {
         recipient: {
             id: recipientId
