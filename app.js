@@ -508,21 +508,7 @@ function sendGenericMessage(recipientId, results) {
                 type: "template",
                 payload: {
                     template_type: "generic",
-                    elements: [{
-                        title: results[0].name,
-                        subtitle: "",
-                        item_url: results[0].link,
-                        //image_url: SERVER_URL + "/assets/rift.png",
-                        buttons: [{
-                            type: "web_url",
-                            url: "https://www.oculus.com/en-us/rift/",
-                            title: "Open Web URL"
-                        }, {
-                            type: "postback",
-                            title: "Call Postback",
-                            payload: "Payload for first bubble",
-                        }],
-                    }]
+                    elements: []
                 }
             }
         }
@@ -532,7 +518,7 @@ function sendGenericMessage(recipientId, results) {
             title: results[i].name,
             subtitle: "",
             item_url: results[i].link,
-            //image_url: results[i].pic,
+            image_url: results[i].image,
             buttons: [{
                 type: "web_url",
                 url: "https://www.oculus.com/en-us/rift/",
@@ -543,7 +529,7 @@ function sendGenericMessage(recipientId, results) {
                 payload: "Payload for first bubble",
             }]
         }
-       // message.elements.push(element)
+        messageData.elements.push(element)
     }
     callSendAPI(messageData);
 }
