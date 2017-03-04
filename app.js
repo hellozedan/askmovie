@@ -536,7 +536,7 @@ function sendGenericMessage(recipientId, results,messageText) {
             }
         }
     };
-    console.log('messageText'+messageText);
+    console.log('results.length'+results.length);
 
     for(var i=0; i<results.length; i++){
         var element ={
