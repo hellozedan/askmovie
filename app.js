@@ -274,20 +274,21 @@ function receivedMessage(event) {
 		 //    }
 	    //
 	    // });
+        sendTextMessage(senderID, "نعتذر هذا الفيلم غير متوفر");
 
-        movie_model.find(
-            { "name": { "$regex": messageText, "$options": "i" } },
-            function(err,docs) {
-                if(docs && docs.length > 0){
-                    console.log('there ix a movie');
-                    sendGenericMessage(senderID, docs,messageText);
-                }
-                else{
-                    sendTextMessage(senderID, "نعتذر هذا الفيلم غير متوفر");
-                }
-
-            }
-        );
+        //movie_model.find(
+        //    { "name": { "$regex": messageText, "$options": "i" } },
+        //    function(err,docs) {
+        //        if(docs && docs.length > 0){
+        //            console.log('there ix a movie');
+        //            sendGenericMessage(senderID, docs,messageText);
+        //        }
+        //        else{
+        //            sendTextMessage(senderID, "نعتذر هذا الفيلم غير متوفر");
+        //        }
+        //
+        //    }
+        //);
 
 
     } else if (messageAttachments) {
