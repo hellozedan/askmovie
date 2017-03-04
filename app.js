@@ -22,8 +22,8 @@
 
 mongoose.Promise = require('bluebird');
 
-var movie_model = require('./models/movie');
-var movie_route = require('./routes/movie')(movie_model);
+var Movie = require('./models/movie');
+var movie_route = require('./routes/movie')(Movie);
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
