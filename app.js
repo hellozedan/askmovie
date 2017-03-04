@@ -275,7 +275,7 @@ function receivedMessage(event) {
 	    //
 	    // });
 
-        Movie.find(
+        movie_model.find(
             { "name": { "$regex": messageText, "$options": "i" } },
             function(err,docs) {
                 if(docs && docs.length > 0){
