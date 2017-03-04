@@ -8,10 +8,10 @@
  */
 
 /* jshint node: true, devel: true */
-'use strict';
+/*'use strict';*/
 
-const
-    bodyParser = require('body-parser'),
+/*const*/
+    bodyParser = require('body-parser')
     config = require('config'),
     crypto = require('crypto'),
     express = require('express'),
@@ -27,7 +27,8 @@ app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({verify: verifyRequestSignature}));
 app.use(express.static('public'));
-
+app.use('/node_modules',express.static(__dirname+'/node_modules'))
+/*app.use('/node_modules',express.static(''))*/
 /*
  * Be sure to setup your config values before running this code. You can 
  * set them using environment variables or modifying the config file in /config.
@@ -779,6 +780,8 @@ var searchTerm = 'screen+scraping';
 var url = 'http://www.anakbnet.com/cdep3-pxxx_xxx.html';
 var pageNS = 'xxx_xxx';
 var Movie = require('./models/movie.js');
+var movie_route = require('./routes/movie')(Movie);
+app.use('/api/movies', movie_route);
 //startCrawel(1);
 function startCrawel(pn) {
     if (pn <= 60) {

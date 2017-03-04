@@ -13,7 +13,14 @@ var movieModel = new Schema({
 	},
 	"img": {
 		type: String
-	}
+	},
+	"links":[
+		{
+			"good":Number,
+			"bad":Number,
+			"url":String
+		}
+	]
 });
 movieModel.index({url: "text", link: "text"});
 module.exports = mongoose.model('Movie', movieModel);
