@@ -4,7 +4,7 @@
 function MoviesService($http, $q) {
 
 
-       //var  apiBase= 'http://localhost:5000/api/'''';
+       //var  apiBase= 'http://localhost:5000/api/';
        var  apiBase= 'https://askmovie.herokuapp.com/api/';
 
     return ({

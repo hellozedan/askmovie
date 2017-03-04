@@ -91,7 +91,7 @@ app.get('/webhook', function (req, res) {
  */
 app.post('/webhook', function (req, res) {
     var data = req.body;
-
+console.log('webhook')
     // Make sure this is a page subscription
     if (data.object == 'page') {
         // Iterate over each entry
@@ -225,6 +225,7 @@ function receivedAuthentication(event) {
  * 
  */
 function receivedMessage(event) {
+    console.log('receivedMessage')
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
@@ -272,10 +273,12 @@ function receivedMessage(event) {
 		 //    }
 	    //
 	    // });
+
         Movie.find(
             { "name": { "$regex": messageText, "$options": "i" } },
             function(err,docs) {
                 if(docs && docs.length > 0){
+                    console.log('there ix a movie')
                     sendGenericMessage(senderID, docs,messageText);
                 }
                 else{
@@ -515,7 +518,7 @@ function sendButtonMessage(recipientId) {
 }
 
 function sendGenericMessage(recipientId, results,messageText) {
-
+    console.log('sendGenericMessage')
 
     var messageData = {
         recipient: {
@@ -531,6 +534,8 @@ function sendGenericMessage(recipientId, results,messageText) {
             }
         }
     };
+    console.log('results[i]._id'+results[i]._id+'messageText'+messageText)
+
     for(var i=0; i<results.length; i++){
         var element ={
             title: results[i].name,

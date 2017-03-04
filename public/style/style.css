@@ -4,6 +4,7 @@ html {
 }
 body {
     min-height: 100vh;
+
 }
 /*.body{
     min-height: 100%;
@@ -19,8 +20,8 @@ body {
 /* Set gray background color and 100% height */
 .sidenav {
     padding-top: 20px;
+   /* background-color: #f1f1f1;*/
     min-height: 100vh;
-    background-color: #f1f1f1;
 }
 
 .title-movie-in-list {
@@ -39,6 +40,7 @@ text-align: center;
 
 .main-view{
     min-height: 100vh;
+     background-color: #f1f1f1;
 
 }
 .img-movie-profile{
@@ -72,6 +74,7 @@ footer {
 
 .img-info-in-list{
     margin-top:20px;
+    cursor: pointer;
 }
 .title-movie-list{
     text-align: center;
