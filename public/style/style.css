@@ -1,0 +1,120 @@
+/* Remove the navbar's default margin-bottom and rounded borders */
+html {
+    height: 100%;
+}
+body {
+    min-height: 100vh;
+}
+/*.body{
+    min-height: 100%;
+}*/
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {height: 450px}
+
+/* Set gray background color and 100% height */
+.sidenav {
+    padding-top: 20px;
+    min-height: 100vh;
+    background-color: #f1f1f1;
+}
+
+.title-movie-in-list {
+text-align: center;
+}
+
+
+.link-area{
+    background-color: rgba(153, 153, 153, 0.15);
+    font-size: 25px;
+    text-align: right;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.main-view{
+    min-height: 100vh;
+
+}
+.img-movie-profile{
+    left: 0px;
+    margin-left: 33%;
+}
+.movie-profile-title{
+    text-align: center;
+}
+.ads-in-waiting{
+    width: 500px;
+}
+/* Set black background color, white text and some padding */
+footer {
+    background-color: #555;
+    color: white;
+    padding: 15px;
+}
+
+.feedback-part-profile{
+    float: left;
+}
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+    .row.content {height:auto;}
+}
+
+.img-info-in-list{
+    margin-top:20px;
+}
+.title-movie-list{
+    text-align: center;
+}
+
+
+
+/* css for searcbox*/
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+
+.search-container{
+    margin-left: 211px;
+    float: left;
+}
+
+/*end css for search box*/

@@ -1,0 +1,34 @@
+<h2 class="movie-profile-title"> قائمة الروابط لمشاهدة فيلم</h2>
+<h2 class="movie-profile-title"> {{vm.movie.name}}</h2>
+
+<img src={{vm.movie.img}} class="img-rounded img-movie-profile" alt="Cinque Terre" width="304" height="320">
+
+
+<div ng-repeat="link in vm.movie.links" class="link-area">
+
+    <a ng-click="vm.GoToMovieLink(link.url)"> للمشاهدة اضغط على الرابط</a>
+    <span class="feedback-part-profile">
+
+
+    <img src="../images/dislike.png" ng-click="vm.AddBadforLink($index)" width="20" height="20">
+          <span>{{link.bad}}</span>
+
+    </span>
+
+
+    <span class="feedback-part-profile">
+
+&nbsp;&nbsp;&nbsp;
+
+    </span>
+     <span class="feedback-part-profile">
+
+ <span>{{link.good}}</span>
+    <img src="../images/like.png" ng-click="vm.AddGoodforLink($index)" width="20" height="20">
+
+    </span>
+
+
+
+
+</div>
