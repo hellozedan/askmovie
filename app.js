@@ -255,6 +255,19 @@ function receivedMessage(event) {
     }
 
     if (messageText) {
+	    // Movie.search(messageText, {name: 1}, {
+		 //    conditions: {name: {$exists: true}},
+		 //    sort: {name: 1},
+		 //    limit: 10
+	    // }, function(err, docs) {
+		 //    if(docs && docs.length > 0){
+			//     sendGenericMessage(senderID, docs);
+		 //    }
+		 //    else{
+			//     sendTextMessage(senderID, "The movie doesn't exist");
+		 //    }
+	    //
+	    // });
         Movie.find(
             { "name": { "$regex": messageText, "$options": "i" } },
             function(err,docs) {
@@ -262,7 +275,7 @@ function receivedMessage(event) {
                     sendGenericMessage(senderID, docs);
                 }
                 else{
-                    sendTextMessage(senderID, "The movie doesn't exist");
+                    sendTextMessage(senderID, "نعتذر هذا الفيلم غير متوفر");
                 }
 
             }
@@ -523,12 +536,14 @@ function sendGenericMessage(recipientId, results) {
             buttons: [{
                 type: "web_url",
                 url: "https://www.oculus.com/en-us/rift/",
-                title: "Open Web URL"
-            }, {
-                type: "postback",
-                title: "Call Postback",
-                payload: "Payload for first bubble",
-            }]
+                title: "لروابط الفيلم"
+            },
+	            {
+		            type: "web_url",
+		            url: "https://www.oculus.com/en-us/rift/",
+		            title: "لنتائج البحث"
+	            }
+            ]
         }
         messageData.message.attachment.payload.elements.push(element)
     }
@@ -775,48 +790,133 @@ app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
 var db = mongoose.connect('mongodb://admin:sa1234@ds157509.mlab.com:57509/mvies');
+// runCima4u();
+// runAnakbnet();
+function runAnakbnet() {
+	var searchTerm = 'screen+scraping';
+	var url = 'http://www.anakbnet.com/cdep3-pxxx_xxx.html';
+	var pageNS = 'xxx_xxx';
+	var Movie = require('./models/movie.js');
+startCrawel(1);
+	function startCrawel(pn) {
+		if (pn <= 60) {
+			crawel(url.replace(pageNS, pn), pn);
+		}
+	}
+	function crawel(url, pn) {
+		request(url, function (err, resp, body) {
+			var $ = cheerio.load(body);
+			var movies = [];
+			var links = $('.art_image img'); //use your CSS selector here
+			$(links).each(function (i, d) {
+				var movieName = d.attribs.title;
+				movieName = movieName.replace('لاين', '')
+				movieName = movieName.replace('اون', '')
+				movieName = movieName.replace('مترجم', '')
+				movieName = movieName.replace('HD', '')
+				movieName = movieName.replace('فيلم', '')
+				movieName = movieName.replace('مشاهدة', '')
+				movieName = movieName.replace('مباشرة', '')
+				movieName = movieName.replace('DVD', '')
+				movieName = movieName.replace(/\d{4}/g, '')
+				movieName = movieName.trim()
+				movies.push({
+					name: movieName,
+					img:'http://www.anakbnet.com/'+d.attribs.src,
+					links: [{url:d.parent.attribs.href,bad:0,good:0}]
+				})
+			});
+			// var arr = [{ name: 'Star Wars' }, { name: 'The Empire Strikes Back' }];
+			Movie.insertMany(movies, function (error, docs) {
+				pn++;
+				startCrawel(pn);
+			});
+		});
+	}
+}
+function runCima4u() {
+	var searchTerm = 'screen+scraping';
+	var url = 'http://cima4u.tv/category/%D8%A7%D9%81%D9%84%D8%A7%D9%85-%D8%A7%D8%AC%D9%86%D8%A8%D9%8A-movies-english/page/xxx_xxx/';
+	var pageNS = 'xxx_xxx';
+	var Movie = require('./models/movie.js');
+startCrawel(1);
+	function startCrawel(pn) {
+		if (pn <= 84) {
+			crawel(url.replace(pageNS, pn), pn);
+		}
+	}
+	function crawel(url, pn) {
+		request(url, function (err, resp, body) {
+			var $ = cheerio.load(body);
+			var movies = [];
+			var links = $('.block a'); //use your CSS selector here
+			$(links).each(function (i, d) {
+			    var ss=cheerio.load(d);
+				var movieName = ss('.boxtitle')[0].children[0].data;
+				movieName = movieName.replace('لاين', '')
+				movieName = movieName.replace('اون', '')
+				movieName = movieName.replace('مترجم', '')
+				movieName = movieName.replace('HD', '')
+				movieName = movieName.replace('فيلم', '')
+				movieName = movieName.replace('مشاهدة', '')
+				movieName = movieName.replace('مباشرة', '')
+				movieName = movieName.replace('DVD', '')
+				movieName = movieName.replace(/\d{4}/g, '')
+				movieName = movieName.trim()
+				movies.push({
+					name: movieName,
+					img:ss('.img1')[0].attribs.style.replace('background-image:url(','').replace(');',''),
+					links: [{url:d.attribs.href,bad:0,good:0}]
+				})
+			});
+			checkMovie(0);
+			function checkMovie(index) {
+			    if(index===movies.length)
+                {
+	                pn++;
+	                console.log('page-'+pn);
+	                startCrawel(pn);
+                }
+                else
+                {
+	                Movie.find({name: movies[index].name},function(err,docs){
+		                if(err){
+			                console.log(err);
+		                }else{
+		                    var movie;
+		                    if(docs.length>0)
+                            {
+	                            docs[0].links.push(movies[index].links[0]);
+	                            movie=docs[0];
+                            }
+                            else
+                            {
+	                            movie=new Movie(movies[index]);
+                            }
+			                movie.save(function (e) {
+				                if (e) {
+					                console.log(e);
+				                } else {
+					                index++;
+					                checkMovie(index);
+				                }
+			                });
 
-var searchTerm = 'screen+scraping';
-var url = 'http://www.anakbnet.com/cdep3-pxxx_xxx.html';
-var pageNS = 'xxx_xxx';
-var Movie = require('./models/movie.js');
-var movie_route = require('./routes/movie')(Movie);
-app.use('/api/movies', movie_route);
-//startCrawel(1);
-function startCrawel(pn) {
-    if (pn <= 60) {
-        crawel(url.replace(pageNS, pn), pn);
-    }
+		                }
+	                });
+
+                }
+
+
+			}
+			// var arr = [{ name: 'Star Wars' }, { name: 'The Empire Strikes Back' }];
+			// Movie.insertMany(movies, function (error, docs) {
+			// 	pn++;
+			// 	startCrawel(pn);
+			// });
+		});
+	}
 }
-function crawel(url, pn) {
-    request(url, function (err, resp, body) {
-        var $ = cheerio.load(body);
-        var movies = [];
-        var links = $('.art_image img'); //use your CSS selector here
-        $(links).each(function (i, d) {
-            var movieName = d.attribs.title;
-            movieName = movieName.replace('لاين', '')
-            movieName = movieName.replace('اون', '')
-            movieName = movieName.replace('مترجم', '')
-            movieName = movieName.replace('HD', '')
-            movieName = movieName.replace('فيلم', '')
-            movieName = movieName.replace('مشاهدة', '')
-            movieName = movieName.replace('مباشرة', '')
-            movieName = movieName.replace('DVD', '')
-            movieName = movieName.replace(/\d{4}/g, '')
-            movieName = movieName.trim()
-            movies.push({
-                name: movieName,
-                img:'http://www.anakbnet.com/'+d.attribs.src,
-                link: d.parent.attribs.href
-            })
-        });
-        // var arr = [{ name: 'Star Wars' }, { name: 'The Empire Strikes Back' }];
-        Movie.insertMany(movies, function (error, docs) {
-            pn++;
-            startCrawel(pn);
-        });
-    });
-}
+
 module.exports = app;
 
