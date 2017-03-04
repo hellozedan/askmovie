@@ -22,6 +22,8 @@
 
 mongoose.Promise = require('bluebird');
 
+var movie_model = require('./models/movie');
+var movie_route = require('./routes/movie')(movie_model);
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -34,6 +36,7 @@ app.use('/node_modules',express.static(__dirname+'/node_modules'))
  * set them using environment variables or modifying the config file in /config.
  *
  */
+
 
 // App Secret can be retrieved from the App Dashboard
 const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
@@ -66,6 +69,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
  * setup is the same token used here.
  *
  */
+app.use('/api/movies', movie_route);
 app.get('/webhook', function (req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
         req.query['hub.verify_token'] === VALIDATION_TOKEN) {
@@ -272,7 +276,7 @@ function receivedMessage(event) {
             { "name": { "$regex": messageText, "$options": "i" } },
             function(err,docs) {
                 if(docs && docs.length > 0){
-                    sendGenericMessage(senderID, docs);
+                    sendGenericMessage(senderID, docs,messageText);
                 }
                 else{
                     sendTextMessage(senderID, "نعتذر هذا الفيلم غير متوفر");
@@ -510,7 +514,7 @@ function sendButtonMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-function sendGenericMessage(recipientId, results) {
+function sendGenericMessage(recipientId, results,messageText) {
 
 
     var messageData = {
@@ -535,12 +539,12 @@ function sendGenericMessage(recipientId, results) {
             image_url: results[i].img,
             buttons: [{
                 type: "web_url",
-                url: "https://www.oculus.com/en-us/rift/",
+                url: "https://askmovie.herokuapp.com/#!/movie_profile/"+ results[i]._id,
                 title: "لروابط الفيلم"
             },
 	            {
 		            type: "web_url",
-		            url: "https://www.oculus.com/en-us/rift/",
+		            url: "https://askmovie.herokuapp.com/#!/movie_list?s="+messageText,
 		            title: "لنتائج البحث"
 	            }
             ]
