@@ -548,7 +548,8 @@ function sendGenericMessage(recipientId, results,messageText) {
                 type: "web_url",
                 url: "https://askmovie.herokuapp.com/#!/movie_profile/"+ results[i]._id,
                 title: "لروابط الفيلم"
-            },
+            }
+                ,
 	            {
 		            type: "web_url",
 		            url: "https://askmovie.herokuapp.com/#!/movie_list?s="+messageText,
