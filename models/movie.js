@@ -16,7 +16,5 @@ var movieModel = new Schema({
 		type: String
 	}
 });
-movieModel.plugin(searchPlugin, {
-	fields: ['name']
-});
+movieModel.index({name: "text"});
 module.exports = mongoose.model('Movie', movieModel);

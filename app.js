@@ -254,31 +254,31 @@ function receivedMessage(event) {
     }
 
     if (messageText) {
-	    Movie.search(messageText, {name: 1}, {
-		    conditions: {name: {$exists: true}},
-		    sort: {name: 1},
-		    limit: 10
-	    }, function(err, docs) {
-		    if(docs && docs.length > 0){
-			    sendGenericMessage(senderID, docs);
-		    }
-		    else{
-			    sendTextMessage(senderID, "The movie doesn't exist");
-		    }
+	    // Movie.search(messageText, {name: 1}, {
+		 //    conditions: {name: {$exists: true}},
+		 //    sort: {name: 1},
+		 //    limit: 10
+	    // }, function(err, docs) {
+		 //    if(docs && docs.length > 0){
+			//     sendGenericMessage(senderID, docs);
+		 //    }
+		 //    else{
+			//     sendTextMessage(senderID, "The movie doesn't exist");
+		 //    }
+	    //
+	    // });
+        Movie.find(
+            { "name": { "$regex": messageText, "$options": "i" } },
+            function(err,docs) {
+                if(docs && docs.length > 0){
+                    sendGenericMessage(senderID, docs);
+                }
+                else{
+                    sendTextMessage(senderID, "نعتذر هذا الفيلم غير متوفر");
+                }
 
-	    });
-        // Movie.search(
-        //     { "name": { "$regex": messageText, "$options": "i" } },
-        //     function(err,docs) {
-        //         if(docs && docs.length > 0){
-        //             sendGenericMessage(senderID, docs);
-        //         }
-        //         else{
-        //             sendTextMessage(senderID, "The movie doesn't exist");
-        //         }
-        //
-        //     }
-        // );
+            }
+        );
 
 
     } else if (messageAttachments) {
@@ -535,12 +535,14 @@ function sendGenericMessage(recipientId, results) {
             buttons: [{
                 type: "web_url",
                 url: "https://www.oculus.com/en-us/rift/",
-                title: "Open Web URL"
-            }, {
-                type: "postback",
-                title: "Call Postback",
-                payload: "Payload for first bubble",
-            }]
+                title: "لروابط الفيلم"
+            },
+	            {
+		            type: "web_url",
+		            url: "https://www.oculus.com/en-us/rift/",
+		            title: "لنتائج البحث"
+	            }
+            ]
         }
         messageData.message.attachment.payload.elements.push(element)
     }
