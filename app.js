@@ -22,8 +22,8 @@
 
 mongoose.Promise = require('bluebird');
 
-var Movie = require('./models/movie');
-var movie_route = require('./routes/movie')(Movie);
+var movie_model = require('./models/movie');
+var movie_route = require('./routes/movie')(movie_model);
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -278,7 +278,7 @@ function receivedMessage(event) {
             { "name": { "$regex": messageText, "$options": "i" } },
             function(err,docs) {
                 if(docs && docs.length > 0){
-                    console.log('there ix a movie')
+                    console.log('there ix a movie');
                     sendGenericMessage(senderID, docs,messageText);
                 }
                 else{
@@ -534,7 +534,7 @@ function sendGenericMessage(recipientId, results,messageText) {
             }
         }
     };
-    console.log('results[i]._id'+results[i]._id+'messageText'+messageText)
+    console.log('results[i]._id'+results[i]._id+'messageText'+messageText);
 
     for(var i=0; i<results.length; i++){
         var element ={
