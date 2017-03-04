@@ -537,8 +537,11 @@ function sendGenericMessage(recipientId, results,messageText) {
         }
     };
     console.log('results.length'+results.length);
-
-    for(var i=0; i<results.length; i++){
+var mxlength=results.length;
+    if(mxlength>5){
+        mxlength=5;
+    }
+    for(var i=0; i<mxlength; i++){
         var element ={
             title: results[i].name,
             subtitle: "",
