@@ -2,11 +2,12 @@
  * Created by ahmad on 06/06/2015.
  */
 var mongoose = require('mongoose'),
+	searchPlugin = require('mongoose-search-plugin'),
 	Schema = mongoose.Schema;
 
 var movieModel = new Schema({
-	"link": {
-		type: String
+	"links": {
+		type: []
 	},
 	"name": {
 		type: String
@@ -15,5 +16,7 @@ var movieModel = new Schema({
 		type: String
 	}
 });
-movieModel.index({url: "text", link: "text"});
+movieModel.plugin(searchPlugin, {
+	fields: ['name']
+});
 module.exports = mongoose.model('Movie', movieModel);

@@ -254,18 +254,31 @@ function receivedMessage(event) {
     }
 
     if (messageText) {
-        Movie.find(
-            { "name": { "$regex": messageText, "$options": "i" } },
-            function(err,docs) {
-                if(docs && docs.length > 0){
-                    sendGenericMessage(senderID, docs);
-                }
-                else{
-                    sendTextMessage(senderID, "The movie doesn't exist");
-                }
+	    Movie.search(messageText, {name: 1}, {
+		    conditions: {name: {$exists: true}},
+		    sort: {name: 1},
+		    limit: 10
+	    }, function(err, docs) {
+		    if(docs && docs.length > 0){
+			    sendGenericMessage(senderID, docs);
+		    }
+		    else{
+			    sendTextMessage(senderID, "The movie doesn't exist");
+		    }
 
-            }
-        );
+	    });
+        // Movie.search(
+        //     { "name": { "$regex": messageText, "$options": "i" } },
+        //     function(err,docs) {
+        //         if(docs && docs.length > 0){
+        //             sendGenericMessage(senderID, docs);
+        //         }
+        //         else{
+        //             sendTextMessage(senderID, "The movie doesn't exist");
+        //         }
+        //
+        //     }
+        // );
 
 
     } else if (messageAttachments) {
@@ -779,7 +792,7 @@ var searchTerm = 'screen+scraping';
 var url = 'http://www.anakbnet.com/cdep3-pxxx_xxx.html';
 var pageNS = 'xxx_xxx';
 var Movie = require('./models/movie.js');
-//startCrawel(1);
+// startCrawel(1);
 function startCrawel(pn) {
     if (pn <= 60) {
         crawel(url.replace(pageNS, pn), pn);
@@ -805,7 +818,7 @@ function crawel(url, pn) {
             movies.push({
                 name: movieName,
                 img:'http://www.anakbnet.com/'+d.attribs.src,
-                link: d.parent.attribs.href
+	            links: [{url:d.parent.attribs.href,bad:0,good:0}]
             })
         });
         // var arr = [{ name: 'Star Wars' }, { name: 'The Empire Strikes Back' }];
