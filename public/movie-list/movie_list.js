@@ -20,25 +20,30 @@ function MovieListController(MoviesService,$state){
     vm.movie_list=[];
     vm.searchbox_input="";
     function getMessageTextUrl(){
+        var messageText="";
         var messageText = getParameterByName('s');
-        MoviesService.searchMovies(messageText).then(function (result) {
-                if (result != null) {
-                    vm.movie_list = result;
+        if(messageText!="") {
+            MoviesService.searchMovies(messageText).then(function (result) {
+                    if (result != null) {
+                        vm.movie_list = result;
+                    }
+                }, function (err) {
                 }
-            }, function (err) {
-            }
-        );
+            );
+        }
     }
 
     vm.searchForFilm=function(){
         var messageText = vm.searchbox_input;
-        MoviesService.searchMovies(messageText).then(function (result) {
-                if (result != null) {
-                    vm.movie_list = result;
+        if(messageText !="") {
+            MoviesService.searchMovies(messageText).then(function (result) {
+                    if (result != null) {
+                        vm.movie_list = result;
+                    }
+                }, function (err) {
                 }
-            }, function (err) {
-            }
-        );
+            );
+        }
 
     }
 
@@ -70,6 +75,7 @@ function MovieListController(MoviesService,$state){
         getMessageTextUrl();
     }
 
+    vm.see_movie="?????? ??????";
     vm.refresh();
 
 

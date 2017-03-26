@@ -50,6 +50,9 @@ text-align: center;
 .movie-profile-title{
     text-align: center;
 }
+.movie-list-title{
+    text-align: center;
+}
 .ads-in-waiting{
     width: 500px;
 }
@@ -120,4 +123,17 @@ footer {
     float: left;
 }
 
+
+
 /*end css for search box*/
+.image-size-static{
+    height: 400px !important;
+    width: 300px;
+}
+
+@media only screen and (max-width: 999px) {
+    .image-size-static{
+        height: 200px !important;
+        width: 300px;
+    }
+}
